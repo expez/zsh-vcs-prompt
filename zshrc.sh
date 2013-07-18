@@ -31,7 +31,7 @@ fi
 ## Logging level.
 #   2:Output error to stderr.
 #   1:Output error to the file (ZSH_VCS_PROMPT_DIR/zsh-vcs-prompt.log).
-#   O/W:Suppress error .
+#   O/W:Suppress all errors.
 ZSH_VCS_PROMPT_LOGGING_LEVEL=${ZSH_VCS_PROMPT_LOGGING_LEVEL:-''}
 
 ## Threshold micro sec to logging running time of zsh-vcs-prompt.
@@ -180,7 +180,7 @@ else
 
     ## Initialize.
     ## The exe directory.
-    if ! type is-at-least > /dev/null 2>&1; then
+    if ! (( $+functions[is-at-least] )) ; then
         autoload -Uz is-at-least
     fi
     if is-at-least 4.3.10; then
@@ -200,7 +200,7 @@ else
     source $ZSH_VCS_PROMPT_DIR/lib/vcsstatus.sh
 
     # Register precmd hook function
-    if ! type add-zsh-hook > /dev/null 2>&1; then
+    if ! (( $+functions[add-zsh-hook] )) ; then
         autoload -Uz add-zsh-hook
     fi
     add-zsh-hook precmd _zsh_vcs_prompt_precmd_hook_func
@@ -461,7 +461,7 @@ function vcs_super_info_raw_data() {
     # When don't use python or error occurs in the python scritp.
     local vcs_status
 
-    if type _zsh_vcs_prompt_vcs_detail_info > /dev/null 2>&1; then
+    if (( $+functions[_zsh_vcs_prompt_vcs_detail_info] )) ; then
         ## zsh
         # Run the sourced function.
         vcs_status="$(_zsh_vcs_prompt_vcs_detail_info)"
